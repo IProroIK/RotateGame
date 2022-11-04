@@ -41,11 +41,11 @@ public class Door : MonoBehaviour
     {
         if( other.TryGetComponent(out Player player))
         {
-            AccelerationMove();
+            AccelerationMoveStartStop();
         }
     }
 
-    private void AccelerationMove()
+    private void AccelerationMoveStartStop()
     {
         if (_player.currentAngle > _angileToGetThrough - _accelerationStartOffset && _player.currentAngle < _angileToGetThrough + _accelerationStartOffset)
         {
