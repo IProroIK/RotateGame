@@ -4511,6 +4511,11 @@ PrefabInstance:
       propertyPath: _win
       value: 
       objectReference: {fileID: 178006695}
+    - target: {fileID: 7139632737870187112, guid: 4cdf5160d82499b4d87fc656e58a6491,
+        type: 3}
+      propertyPath: _warpEffect
+      value: 
+      objectReference: {fileID: 1993526538}
     - target: {fileID: 7139632737870187113, guid: 4cdf5160d82499b4d87fc656e58a6491,
         type: 3}
       propertyPath: m_RootOrder
@@ -4576,6 +4581,12 @@ PrefabInstance:
       propertyPath: _scoreText
       value: 
       objectReference: {fileID: 1819633215}
+    - target: {fileID: 7139632737870187119, guid: 4cdf5160d82499b4d87fc656e58a6491,
+        type: 3}
+      propertyPath: _textEffect
+      value: 
+      objectReference: {fileID: 8715912393873931081, guid: f802fb9766db80846ad16c9c8d325f7c,
+        type: 3}
     - target: {fileID: 7139632737870187119, guid: 4cdf5160d82499b4d87fc656e58a6491,
         type: 3}
       propertyPath: _poolContainer

@@ -1,21 +1,31 @@
 using UnityEngine;
 using DG.Tweening;
+using System.Collections;
+using System;
 
 public class Player : MonoBehaviour
 {
-    public float currentAngle { get; private set; }
-    public float acceleration { get; set; } = 1;
+    public event Action OnAngileFeet;
+
+    private const float _accelerationStartOffset = 10;
+    private const int _accelerationFit = 4;
+    private const int _normalAcceleration = 1;
+    private const float _invokeDelay = 0.2f;
 
     [SerializeField] private float _speed;
     [SerializeField] Rigidbody _rigidbody;
     [SerializeField] private float _endRotationTime = 0.2f;
     [SerializeField] private float _strength = 5;
     [SerializeField] private float _sensitivity;
+    [SerializeField] private float _acceleration = 1;
     [SerializeField] private Win _win;
+    [SerializeField] private ParticleSystem _warpEffect;
+
     private Vector3 _mouseReference;
     private Vector3 _mouseOffset;
     private Vector3 _rotation;
     private bool _isRotating;
+    private bool _isFeet = true;
 
     private void Awake()
     {
@@ -38,12 +48,51 @@ public class Player : MonoBehaviour
         CheckRotate();
         MoveForward();
         Rotate();
-        currentAngle = transform.rotation.eulerAngles.y;
     }
 
     private void MoveForward()
     {
-        transform.position += Vector3.forward * _speed * acceleration * Time.deltaTime;
+        transform.position += Vector3.forward * _speed * _acceleration * Time.deltaTime;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.TryGetComponent(out Door door))
+        {
+            if (transform.rotation.eulerAngles.y > door.GetAngileToGetThrough() - _accelerationStartOffset && transform.rotation.eulerAngles.y < door.GetAngileToGetThrough() + _accelerationStartOffset)
+            {
+                AccelerationMoveStart();
+            }
+            else
+            {
+                AccelerationMoveStop();
+            }
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.TryGetComponent(out Door door))
+        {
+            AccelerationMoveStop();
+        }
+    }
+    private void AccelerationMoveStart()
+    {
+        _acceleration = _accelerationFit;
+        if (_isFeet) StartCoroutine(DoorCheckFitEventDelay());
+        _warpEffect.transform.gameObject.SetActive(true);
+    }
+    private void AccelerationMoveStop()
+    {
+        _warpEffect.transform.gameObject.SetActive(false);
+        _acceleration = _normalAcceleration;
+    }
+    private IEnumerator DoorCheckFitEventDelay()
+    {
+        _isFeet = false;
+        OnAngileFeet?.Invoke();
+        yield return new WaitForSeconds(_invokeDelay);
+        _isFeet = true;
     }
 
     private void Rotate()

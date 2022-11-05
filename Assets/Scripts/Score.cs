@@ -8,6 +8,7 @@ public class Score : MonoBehaviour
     private const int WinScore = 300;
 
     [SerializeField] private List<Door> _doors;
+    [SerializeField] private Player _player;
     [SerializeField] private Transform _poolContainer;
     [SerializeField] private TextEffect _textEffect;
     [SerializeField] private TextMeshProUGUI _scoreText;
@@ -26,10 +27,10 @@ public class Score : MonoBehaviour
     {
         for (int i = 0; i < _doors.Count; i++)
         {
-            _doors[i].OnAngileFeet += SpawnText;
             _doors[i].OnDoorPass += AddScoreAfterDoorPass;
 
         }
+        _player.OnAngileFeet += SpawnText;
         _win.OnWin += AddWinScore;
     }
 
@@ -37,9 +38,9 @@ public class Score : MonoBehaviour
     {
         for (int i = 0; i < _doors.Count; i++)
         {
-            _doors[i].OnAngileFeet -= SpawnText;
             _doors[i].OnDoorPass -= AddScoreAfterDoorPass;
         }
+        _player.OnAngileFeet -= SpawnText;
         _win.OnWin -= AddWinScore;
     }
 
